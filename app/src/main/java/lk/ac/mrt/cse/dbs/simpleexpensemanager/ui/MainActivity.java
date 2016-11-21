@@ -29,6 +29,7 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.R;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.ExpenseManager;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.InMemoryDemoExpenseManager;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.PersistentDemoExpenseManager;
+import lk.ac.mrt.cse.dbs.simpleexpensemanager.control.PersistentExpenseManager;
 
 public class MainActivity extends AppCompatActivity {
     private ExpenseManager expenseManager;
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         /***  Begin generating dummy data for In-Memory implementation  ***/
         //expenseManager = new InMemoryDemoExpenseManager();
-        expenseManager = new PersistentDemoExpenseManager(this.getBaseContext());
+        //expenseManager = new PersistentDemoExpenseManager(getApplicationContext());
+        expenseManager = new PersistentExpenseManager(getApplicationContext());
         /*** END ***/
     }
 

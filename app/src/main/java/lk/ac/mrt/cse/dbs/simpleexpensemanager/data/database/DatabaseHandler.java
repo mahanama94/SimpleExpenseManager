@@ -3,6 +3,8 @@ package lk.ac.mrt.cse.dbs.simpleexpensemanager.data.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.Settings;
+import android.util.Log;
 
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl.PersistentAccountDAO;
 import lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl.PersistentTransactionDAO;
@@ -16,7 +18,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static DatabaseHandler instance = null;
 
     private DatabaseHandler(Context context){
-        super(context, "140381E.db", null, 1);
+        super(context, "140381E", null, 1);
     }
 
     public static  DatabaseHandler getInstance(Context context){
@@ -31,7 +33,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         this.createAccountTable(sqLiteDatabase);
 
-        //this.createTransactionTable(sqLiteDatabase);
+        this.createTransactionTable(sqLiteDatabase);
+
         //this.createTransactionTable(sqLiteDatabase);
     }
 
@@ -44,22 +47,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     private void createAccountTable(SQLiteDatabase db){
-        String query = "CREATE TABLE " + PersistentAccountDAO.TABLE_NAME + "("
-                + PersistentAccountDAO.ACCOUNT_NUMBER + " VARCHAR(6) PRIMARY KEY,"
+        String query = "CREATE TABLE if not exists  " + PersistentAccountDAO.TABLE_NAME + "("
+                + PersistentAccountDAO.ACCOUNT_NUMBER + " VARCHAR(6),"
                 + PersistentAccountDAO.BANK_NAME + " VARCHAR(50),"
                 + PersistentAccountDAO.ACCOUNT_HOLDER_NAME + " VARCHAR(100),"
-                + PersistentAccountDAO.BALANCE + " DOUBLE "+ "); ";
+                + PersistentAccountDAO.BALANCE + " REAL "+ "); ";
 
         db.execSQL(query);
     }
 
     private void createTransactionTable(SQLiteDatabase db){
-        String query = "CREATE TABLE " + PersistentTransactionDAO.TABLE_NAME + " ("
-                + PersistentTransactionDAO.TRANSACTION_ID + " BIGINT(6) AUTOINCREMENT PRIMARY KEY, "
+        String query = "CREATE TABLE if not exists  " + PersistentTransactionDAO.TABLE_NAME + " ("
+                + PersistentTransactionDAO.TRANSACTION_ID + " INTEGER PRIMARY KEY, "
                 + PersistentTransactionDAO.ACCOUNT_NUMBER + " VARCHAR(6),"
-                + PersistentTransactionDAO.DATE  + " VARCHAR(10),"
+                + PersistentTransactionDAO.DATE  + " VARCHAR(80),"
                 + PersistentTransactionDAO.TYPE + " VARCHAR(10), "
-                + PersistentTransactionDAO.AMOUNT + " DOUBLE, "
+                + PersistentTransactionDAO.AMOUNT + " REAL, "
                 + "FOREIGN KEY(" + PersistentTransactionDAO.ACCOUNT_NUMBER + ") REFERENCES "
                 + PersistentAccountDAO.TABLE_NAME +"("+ PersistentAccountDAO.ACCOUNT_NUMBER +")"+"); ";
 
